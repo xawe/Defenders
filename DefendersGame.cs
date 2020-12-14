@@ -28,10 +28,12 @@ namespace Defenders
         public static Viewport Viewport { get { return Instance.GraphicsDevice.Viewport; } }
         public static Vector2 ScreenSize { get { return new Vector2(Viewport.Width, Viewport.Height); } }
 
+        private MissileSpawner spawner;
+
         private List<Objects.Missile> missiles;
         public DefendersGame()
         {
-            
+            spawner = new MissileSpawner(this);
             missiles = new List<Objects.Missile>();
             Instance = this;
             _graphics = new GraphicsDeviceManager(this);
@@ -58,13 +60,19 @@ namespace Defenders
 
         protected override void Update(GameTime gameTime)
         {
+            
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
             spriteOrigin = new Vector2(NaveRectangle.Width / 2, NaveRectangle.Height / 2);
             missiles.ForEach(m =>
             {
-                m.Update(gameTime);
+                m.Update(gameTime);                
+                debugMessage = "TIME ::> " + gameTime.TotalGameTime + " \n";
+                debugMessage += m.Angle.ToString();
+                
             });
+
+            spawner.Update(gameTime);
             // TODO: Add your update logic here
 
             base.Update(gameTime);
@@ -79,18 +87,18 @@ namespace Defenders
             {
                 m.Draw(_spriteBatch);
             });
-            //float siz = 0.2f;
-            /*
-            System.Random r = new System.Random();
-            float f1 = ((float) r.NextDouble());
-            for (int i = 0; i < 50; i++)
-            {
-                _spriteBatch.Draw(Texture, Position, null, Color.White, 0, spriteOrigin, f1 * 1.2f, SpriteEffects.None, 0);;
-            }
-            */
-            
 
+            _spriteBatch.DrawString(font, debugMessage,
+               new Vector2(0, 0),
+               Color.Gray,
+               0,
+               new Vector2(0, 0),
+               .55f,
+               SpriteEffects.None,
+               0
+               );
 
+            spawner.Draw(_spriteBatch);
 
             _spriteBatch.End();
             // TODO: Add your drawing code here
