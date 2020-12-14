@@ -26,7 +26,7 @@ namespace Defenders.Objects
             Texture = game.Content.Load<Texture2D>("Ship");
             spriteOrigin = new Vector2(Texture.Width/2, Texture.Height/2);
             this.position = position;
-            Angle = 2.1f ;            
+            Angle = 2.3f ;            
         }
 
         public void Update(GameTime gameTime)

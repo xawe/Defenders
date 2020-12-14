@@ -11,7 +11,7 @@ namespace Defenders
     public class MissileSpawner
     {
         private TimeSpan elapsedSpawn;
-        private List<Objects.Missile> missileList;
+        private List<Objects.Missile> missileList;        
 
         private Game _game;
         
@@ -27,7 +27,7 @@ namespace Defenders
             if (Math.Round(gameTime.TotalGameTime.TotalSeconds) > Math.Round(elapsedSpawn.TotalSeconds))
             {
                 elapsedSpawn = gameTime.TotalGameTime;
-                missileList.Add(new Objects.Missile(this._game, new Vector2(30, -10)));
+                missileList.Add(new Objects.Missile(this._game, new Vector2(10, -5)));
             }
             missileList.ForEach(m => { m.Update(gameTime);});
         }
@@ -36,5 +36,6 @@ namespace Defenders
         {
             missileList.ForEach(m => { m.Draw(spriteBatch); });            
         }
+       
     }
 }
