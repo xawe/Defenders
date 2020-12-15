@@ -32,16 +32,18 @@ namespace Defenders
 
         private List<Objects.Missile> missiles;
         public DefendersGame()
-        {
-            spawner = new MissileSpawner(this);
+        {            
             missiles = new List<Objects.Missile>();
             Instance = this;
             _graphics = new GraphicsDeviceManager(this);
             _graphics.PreferredBackBufferWidth = 1152;            
             _graphics.PreferredBackBufferHeight = 684;
-            _graphics.IsFullScreen = false;                        
+            _graphics.IsFullScreen = false;
+            _graphics.ApplyChanges();
             Content.RootDirectory = "Content";
-            IsMouseVisible = true;            
+            IsMouseVisible = true;
+
+            spawner = new MissileSpawner(Instance);
         }
 
         protected override void Initialize()

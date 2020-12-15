@@ -21,11 +21,13 @@ namespace Defenders
         private List<Objects.Missile> missileList;        
         private Game _game;
         
+        
         public MissileSpawner(Game game)
         {
             _game = game;
             missileList = new List<Objects.Missile>();
-            elapsedSpawn = TimeSpan.Zero;
+            elapsedSpawn = TimeSpan.Zero;            
+            var x = game.Window.ClientBounds;
         }
 
         public void Update(GameTime gameTime)
@@ -33,7 +35,7 @@ namespace Defenders
             if (Math.Round(gameTime.TotalGameTime.TotalSeconds) > Math.Round(elapsedSpawn.TotalSeconds))
             {
                 elapsedSpawn = gameTime.TotalGameTime;
-                missileList.Add(new Objects.Missile(this._game, new Vector2(10, -5)));
+                missileList.Add(new Objects.Missile(this._game, new Vector2(DefineHorizontalLauchPoint(_game, gameTime), -5)));
             }
             missileList.ForEach(m => { m.Update(gameTime);});
         }
@@ -43,5 +45,14 @@ namespace Defenders
             missileList.ForEach(m => { m.Draw(spriteBatch); });            
         }
        
+        private float DefineHorizontalLauchPoint(Game game, GameTime gameTime)
+        {
+            var varNumber = (gameTime.TotalGameTime.Milliseconds / (gameTime.TotalGameTime.Seconds + 1) * Math.PI);
+            //Necessário validar o custo da alocação de nova instancia a cada projeção
+            Random random = new Random();
+
+            var r = (float)random.Next(-20, game.Window.ClientBounds.Width + 20);
+            return r;
+        }
     }
 }
