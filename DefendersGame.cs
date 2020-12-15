@@ -28,7 +28,7 @@ namespace Defenders
         public static Viewport Viewport { get { return Instance.GraphicsDevice.Viewport; } }
         public static Vector2 ScreenSize { get { return new Vector2(Viewport.Width, Viewport.Height); } }
 
-        private MissileSpawner spawner;
+        private MissileLaunchControl spawner;
 
         private List<Objects.Missile> missiles;
         public DefendersGame()
@@ -43,7 +43,7 @@ namespace Defenders
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
 
-            spawner = new MissileSpawner(Instance);
+            spawner = new MissileLaunchControl(Instance);
         }
 
         protected override void Initialize()
@@ -73,8 +73,10 @@ namespace Defenders
                 debugMessage += m.Angle.ToString();
                 
             });
-
-            spawner.Update(gameTime);
+            
+            var launchEvent = spawner.LaunchMissile(gameTime);
+            if (launchEvent.Item1)missiles.Add(launchEvent.Item2);
+            
             // TODO: Add your update logic here
 
             base.Update(gameTime);
@@ -99,9 +101,6 @@ namespace Defenders
                SpriteEffects.None,
                0
                );
-
-            spawner.Draw(_spriteBatch);
-
             _spriteBatch.End();
             // TODO: Add your drawing code here
 
