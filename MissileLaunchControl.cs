@@ -15,10 +15,13 @@ namespace Defenders
     {
         private TimeSpan _elapsedSpawn;        
         private Game _game;
+        private int _minWidth, _maxWidth;
 
 
         public MissileLaunchControl(Game game)
         {
+            _minWidth = -20;
+            _maxWidth = game.Window.ClientBounds.Width + 20;
             _game = game;            
             _elapsedSpawn = TimeSpan.Zero;
         }
