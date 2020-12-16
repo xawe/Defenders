@@ -6,6 +6,12 @@ using System.Text;
 
 namespace Defenders.Objects
 {
+    /// <summary>
+    /// Responsável por representar um objeto Missel, encapsulando as funcionalidades:
+    /// Update - Para atualizar informações referentes ao objeto, chamado a cada ciclo
+    /// Draw - Para desenhar as atualizações do missel em tela, chamado a a cada Ciclo
+    /// 
+    /// </summary>
     public class Missile
     {        
         public Texture2D Texture { get; set; }       
@@ -28,7 +34,10 @@ namespace Defenders.Objects
             this.position = position;
             Angle = 2.8f ;            
         }
-
+        /// <summary>
+        /// Método responsável por executar os calculos e atualizações do objeto
+        /// </summary>
+        /// <param name="gameTime"></param>
         public void Update(GameTime gameTime)
         {
             var deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
@@ -43,6 +52,10 @@ namespace Defenders.Objects
             position += velocity * deltaTime;            
         }
 
+        /// <summary>
+        /// Método responsável por desenhar atualizações do objeto em tela
+        /// </summary>
+        /// <param name="spriteBatch">instancia do spriteBatch</param>
         public void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(Texture, position, null, Color.White, Angle, spriteOrigin, 0.25f, SpriteEffects.None, 0); ;

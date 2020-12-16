@@ -49,7 +49,6 @@ namespace Defenders
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-
             base.Initialize();
         }
 
@@ -61,8 +60,7 @@ namespace Defenders
         }
 
         protected override void Update(GameTime gameTime)
-        {
-            
+        {            
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
             spriteOrigin = new Vector2(NaveRectangle.Width / 2, NaveRectangle.Height / 2);
