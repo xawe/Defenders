@@ -16,20 +16,20 @@ namespace Defenders.Objects
         public float SpeedFactor { get; set; }
 
         private Vector2 velocity;
-
-        private float rotationSpeed = 0.4f;
+        
         private Vector2 position;
         Vector2 acceleration = new Vector2(0);
 
         Vector2 spriteOrigin;
-        public Missile(Game game, Vector2 position)
+        public Missile(Game game, Vector2 position, float angle)
         {
             if (SpeedFactor == 0) SpeedFactor = 277f;
             velocity = new Vector2(0);
             Texture = game.Content.Load<Texture2D>("Ship");
             spriteOrigin = new Vector2(Texture.Width / 2, Texture.Height / 2);
             this.position = position;
-            Angle = 2.8f;
+            if (angle.Equals(0)) { Angle = 2.8f; }
+            else { Angle = angle; }
         }
         /// <summary>
         /// Método responsável por executar os calculos e atualizações do objeto
@@ -49,7 +49,7 @@ namespace Defenders.Objects
             // Para manter a velocidade dos misseis constante, normalizar a aceleração
             var constantSpeed = -Vector2.Normalize(acceleration);
             // inverter os valores normalizados mutiplicando por -1 antes de atribuir a posição
-            position += (constantSpeed * .5f) * -1 ;
+            position += (constantSpeed * .3f) * -1 ;
 
             // para manter uma aceleração constante sobre o tempo, multiplicar a aceleração pelo deltaTime
             //velocity += acceleration * deltaTime * deltaTime;

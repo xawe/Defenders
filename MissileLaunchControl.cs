@@ -15,13 +15,13 @@ namespace Defenders
     {
         private TimeSpan _elapsedSpawn;        
         private Game _game;
-        private int _minWidth, _maxWidth;
+        private int _xMin, _xMax;
 
 
         public MissileLaunchControl(Game game)
         {
-            _minWidth = -20;
-            _maxWidth = game.Window.ClientBounds.Width + 20;
+            _xMin = -20;
+            _xMax = game.Window.ClientBounds.Width + 20;
             _game = game;            
             _elapsedSpawn = TimeSpan.Zero;
         }
@@ -30,21 +30,41 @@ namespace Defenders
         {
             if (Math.Round(gameTime.TotalGameTime.TotalSeconds) > Math.Round(_elapsedSpawn.TotalSeconds))
             {
+                float newPos = DefineHorizontalLauchPoint();
+                float newAngle = DefineAngle();
                 _elapsedSpawn = gameTime.TotalGameTime;
-                return new ValueTuple<bool, Objects.Missile>(true, new Objects.Missile(this._game, new Vector2(DefineHorizontalLauchPoint(_game), -5)));
+                return new ValueTuple<bool, Objects.Missile>(true,
+                        new Objects.Missile(this._game,
+                            new Vector2(newPos,
+                                -5),
+                            newAngle));
             }
             return new ValueTuple<bool, Objects.Missile>(false, null);
         }
 
+        /// <summary>
+        /// Define um angulo dentro de um range pré parametrizado
+        /// TODO - Implementar logica melhor
+        /// </summary>
+        /// <param name="initialPosition"></param>
+        /// <returns></returns>
         private float DefineAngle()
         {
-            return float.MinValue;
+            Random r = new Random();
+            r.NextDouble();
+            float minAngle = 2.5f;            
+            return ((float)r.NextDouble()) + minAngle ;
         }
-        private float DefineHorizontalLauchPoint(Game game)
+        /// <summary>
+        /// Define uma posição inicial no eixo X para lançar o missel de forma randomica.
+        /// </summary>
+        /// <param name="game"></param>
+        /// <returns></returns>
+        private float DefineHorizontalLauchPoint()
         {            
             //Necessário validar o custo da alocação de nova instancia a cada projeção            
             Random random = new Random();
-            var r = (float)random.Next(-20, game.Window.ClientBounds.Width + 20);            
+            var r = (float)random.Next(_xMin, _xMax);            
             return r;
         }
     }
