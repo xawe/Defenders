@@ -56,7 +56,7 @@ namespace Defenders
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
             font = Content.Load<SpriteFont>("Font");
-            missiles.Add(new Objects.Missile(this, new Vector2(100, 100)));
+            missiles.Add(new Objects.Missile(this, new Vector2(100, 100), 0f));
         }
 
         protected override void Update(GameTime gameTime)
