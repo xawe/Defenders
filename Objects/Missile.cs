@@ -14,19 +14,20 @@ namespace Defenders.Objects
         public Texture2D Texture { get; set; }
         public float Angle { get; set; }
         public float SpeedFactor { get; set; }
+        public Vector2 SpriteOrigin { get; set; }
 
         private Vector2 velocity;
         
         private Vector2 position;
-        Vector2 acceleration = new Vector2(0);
+        private Vector2 acceleration = new Vector2(0);
+        
 
-        Vector2 spriteOrigin;
         public Missile(Game game, Vector2 position, float angle)
         {
             if (SpeedFactor == 0) SpeedFactor = 277f;
             velocity = new Vector2(0);
             Texture = game.Content.Load<Texture2D>("Ship");
-            spriteOrigin = new Vector2(Texture.Width / 2, Texture.Height / 2);
+            SpriteOrigin = new Vector2(Texture.Width / 2, Texture.Height / 2);
             this.position = position;
             if (angle.Equals(0)) { Angle = 2.8f; }
             else { Angle = angle; }
@@ -62,7 +63,7 @@ namespace Defenders.Objects
         /// <param name="spriteBatch">instancia do spriteBatch</param>
         public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(Texture, position, null, Color.White, Angle, spriteOrigin, 0.25f, SpriteEffects.None, 0); ;
+            spriteBatch.Draw(Texture, position, null, Color.White, Angle, SpriteOrigin, 0.25f, SpriteEffects.None, 0); ;
         }
     }
 }
