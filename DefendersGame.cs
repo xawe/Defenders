@@ -74,9 +74,6 @@ namespace Defenders
 
             var launchEvent = spawner.LaunchMissile(gameTime);
             if (launchEvent.Item1) missiles.Add(launchEvent.Item2);
-
-            // TODO: Add your update logic here
-
             base.Update(gameTime);
         }
 

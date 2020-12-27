@@ -24,7 +24,7 @@ namespace Defenders.Objects
         Vector2 spriteOrigin;
         public Missile(Game game, Vector2 position)
         {
-            if (SpeedFactor == 0) SpeedFactor = 255f;
+            if (SpeedFactor == 0) SpeedFactor = 277f;
             velocity = new Vector2(0);
             Texture = game.Content.Load<Texture2D>("Ship");
             spriteOrigin = new Vector2(Texture.Width / 2, Texture.Height / 2);
@@ -43,10 +43,17 @@ namespace Defenders.Objects
 
             if (acceleration == Vector2.Zero)
             {
+                // SpeedFactor não tem utilidade se usarmos a velocidade constante
                 acceleration = Vector2.Transform(up, rotMatrix) * SpeedFactor;
             }
-            velocity += acceleration * deltaTime * deltaTime;
-            position += velocity * deltaTime;
+            // Para manter a velocidade dos misseis constante, normalizar a aceleração
+            var constantSpeed = -Vector2.Normalize(acceleration);
+            // inverter os valores normalizados mutiplicando por -1 antes de atribuir a posição
+            position += (constantSpeed * .5f) * -1 ;
+
+            // para manter uma aceleração constante sobre o tempo, multiplicar a aceleração pelo deltaTime
+            //velocity += acceleration * deltaTime * deltaTime;
+            //position += velocity * deltaTime;
         }
 
         /// <summary>
