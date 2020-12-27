@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Defenders
 {
@@ -69,8 +70,10 @@ namespace Defenders
                 m.Update(gameTime);
                 debugMessage = "TIME ::> " + gameTime.TotalGameTime + " \n";
                 debugMessage += m.Angle.ToString();
-
             });
+
+            var dead = missiles.Where(m => m.Dead.Equals(true)).ToList();
+            dead.ForEach(m => missiles.Remove(m));
 
             var launchEvent = spawner.LaunchMissile(gameTime);
             if (launchEvent.Item1) missiles.Add(launchEvent.Item2);

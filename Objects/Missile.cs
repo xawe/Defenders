@@ -16,14 +16,22 @@ namespace Defenders.Objects
         public float SpeedFactor { get; set; }
         public Vector2 SpriteOrigin { get; set; }
 
+        public bool Dead { get; set; }
+
         private Vector2 velocity;
         
         private Vector2 position;
         private Vector2 acceleration = new Vector2(0);
+        private Game _game;
+
+        private Effects.Explosion eff;
         
 
         public Missile(Game game, Vector2 position, float angle)
         {
+            Dead = false;
+            eff = new Effects.Explosion();
+            _game = game;
             if (SpeedFactor == 0) SpeedFactor = 277f;
             velocity = new Vector2(0);
             Texture = game.Content.Load<Texture2D>("Ship");
@@ -52,6 +60,12 @@ namespace Defenders.Objects
             // inverter os valores normalizados mutiplicando por -1 antes de atribuir a posição
             position += (constantSpeed * .3f) * -1 ;
 
+            if (position.Y >= _game.Window.ClientBounds.Bottom -300)
+            {
+                eff.CreateExplosion(position, 1);
+                Dead = true;
+            }
+
             // para manter uma aceleração constante sobre o tempo, multiplicar a aceleração pelo deltaTime
             //velocity += acceleration * deltaTime * deltaTime;
             //position += velocity * deltaTime;
@@ -63,7 +77,9 @@ namespace Defenders.Objects
         /// <param name="spriteBatch">instancia do spriteBatch</param>
         public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(Texture, position, null, Color.White, Angle, SpriteOrigin, 0.25f, SpriteEffects.None, 0); ;
+            spriteBatch.Draw(Texture, position, null, Color.White, Angle, SpriteOrigin, 0.25f, SpriteEffects.None, 0);
+            eff.Move();
+            eff.Draw(spriteBatch, Texture);
         }
     }
 }
