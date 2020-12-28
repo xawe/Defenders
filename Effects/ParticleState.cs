@@ -49,7 +49,7 @@ namespace Defenders.Effects
 
             // fade the particle if its PercentLife or speed is low.
             float alpha = System.Math.Min(1, System.Math.Min(particle.PercentLife * 2, speed * 1f));
-            alpha *= alpha;
+            alpha = alpha;
 
             particle.Tint.A = (byte)(255 * alpha);
 
@@ -57,7 +57,7 @@ namespace Defenders.Effects
             if (particle.State.Type == ParticleType.Bullet)
                 particle.Scale.X = particle.State.LengthMultiplier * System.Math.Min(System.Math.Min(1f, 0.1f * speed + 0.1f), alpha);
             else
-                particle.Scale.X = particle.State.LengthMultiplier * System.Math.Min(System.Math.Min(1f, 0.2f * speed + 0.1f), alpha);
+                particle.Scale.X = particle.State.LengthMultiplier * System.Math.Min(System.Math.Min(1f, .2f * speed + 0.1f), alpha);
 
             particle.Orientation = vel.ToAngle();
 
@@ -81,7 +81,7 @@ namespace Defenders.Effects
             else if (particle.State.Type == ParticleType.Enemy)
                 vel *= 0.94f;
             else if (particle.State.Type == ParticleType.Missile)
-                vel *= 0.940f;
+                vel *= 0.950f;
             else
                 vel *= 0.96f + System.Math.Abs(pos.X) % 0.04f; // rand.Next() isn't thread-safe, so use the position for pseudo-randomness
 

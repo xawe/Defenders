@@ -32,7 +32,7 @@ namespace Defenders.Objects
 
         public Missile(Game game, Vector2 position, float angle)
         {
-            FramesToExplode = 3;
+            FramesToExplode = 8;
             State = Enum.MissileState.Alive;            
             _game = game;
             if (SpeedFactor == 0) SpeedFactor = 277f;
