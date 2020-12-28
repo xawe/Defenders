@@ -9,7 +9,7 @@ namespace Defenders.Enum
     public enum MissileState
     {
         Alive = 1,
-        Explode = 2,
+        Exploding = 2,
         Dead = 3
     }
 }

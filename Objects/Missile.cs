@@ -65,7 +65,7 @@ namespace Defenders.Objects
             // exploding for test purpose. Remove this code
             if (position.Y >= _game.Window.ClientBounds.Bottom -400)
             {                
-                State = Enum.MissileState.Explode;
+                State = Enum.MissileState.Exploding;
                 CreateExplosion();
             }
             FramesToExplode = UpdateExplosionFrame(FramesToExplode, State);
@@ -116,7 +116,7 @@ namespace Defenders.Objects
         /// <returns>Retorna a quantidade de frames - 1</returns>
         private int UpdateExplosionFrame(int remainingFrames, Enum.MissileState state)
         {
-            if (state.Equals(Enum.MissileState.Explode))
+            if (state.Equals(Enum.MissileState.Exploding))
             {
                 return remainingFrames - 1;
             }

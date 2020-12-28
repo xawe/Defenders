@@ -77,7 +77,7 @@ namespace Defenders
                 debugMessage = "TIME ::> " + gameTime.TotalGameTime + " \n";
                 debugMessage += m.Angle.ToString();
 
-                if(m.State.Equals(Enum.MissileState.Explode) && m.FramesToExplode.Equals(0))
+                if(m.State.Equals(Enum.MissileState.Exploding) && m.FramesToExplode.Equals(0))
                 {
                     m.State = Enum.MissileState.Dead;
                     deadList.Add(m);
