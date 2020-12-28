@@ -81,9 +81,7 @@ namespace Defenders.Objects
         /// <param name="spriteBatch">instancia do spriteBatch</param>
         public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(Texture, position, null, Color.White, Angle, SpriteOrigin, 0.25f, SpriteEffects.None, 0);
-            //eff.Move();
-            //eff.Draw(spriteBatch, Texture);
+            spriteBatch.Draw(Texture, position, null, Color.White, Angle, SpriteOrigin, 0.25f, SpriteEffects.None, 0);            
         }
 
         
