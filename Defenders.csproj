@@ -31,6 +31,9 @@
     <None Update="Content\Font.xnb">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="Content\Laser.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Content\Nave.xnb">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

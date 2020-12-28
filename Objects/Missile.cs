@@ -1,5 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System;
+using Defenders.Extensions;
 
 namespace Defenders.Objects
 {
@@ -11,12 +13,16 @@ namespace Defenders.Objects
     /// </summary>
     public class Missile
     {
+        public static Random rand = new Random();
         public Texture2D Texture { get; set; }
         public float Angle { get; set; }
         public float SpeedFactor { get; set; }
         public Vector2 SpriteOrigin { get; set; }
 
-        public bool Dead { get; set; }
+        public static Effects.ParticleManager<Effects.ParticleState> ParticleManager { get; private set; }
+
+        public Enum.MissileState State { get; set; }
+        public int FramesToExplode { get; set; }
 
         private Vector2 velocity;
         
@@ -24,13 +30,10 @@ namespace Defenders.Objects
         private Vector2 acceleration = new Vector2(0);
         private Game _game;
 
-        private Effects.Explosion eff;
-        
-
         public Missile(Game game, Vector2 position, float angle)
         {
-            Dead = false;
-            eff = new Effects.Explosion();
+            FramesToExplode = 3;
+            State = Enum.MissileState.Alive;            
             _game = game;
             if (SpeedFactor == 0) SpeedFactor = 277f;
             velocity = new Vector2(0);
@@ -48,8 +51,7 @@ namespace Defenders.Objects
         {
             var deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
             Vector2 up = new Vector2(0f, -1f);
-            Matrix rotMatrix = Matrix.CreateRotationZ(Angle);
-
+            Matrix rotMatrix = Matrix.CreateRotationZ(Angle);            
             if (acceleration == Vector2.Zero)
             {
                 // SpeedFactor não tem utilidade se usarmos a velocidade constante
@@ -60,12 +62,16 @@ namespace Defenders.Objects
             // inverter os valores normalizados mutiplicando por -1 antes de atribuir a posição
             position += (constantSpeed * .3f) * -1 ;
 
-            if (position.Y >= _game.Window.ClientBounds.Bottom -300)
-            {
-                eff.CreateExplosion(position, 1);
-                Dead = true;
+            if (position.Y >= _game.Window.ClientBounds.Bottom -400)
+            {                
+                State = Enum.MissileState.Explode;
+                CreateExplosion();
             }
 
+            if (State.Equals(Enum.MissileState.Explode))
+            {               
+                FramesToExplode--;
+            }
             // para manter uma aceleração constante sobre o tempo, multiplicar a aceleração pelo deltaTime
             //velocity += acceleration * deltaTime * deltaTime;
             //position += velocity * deltaTime;
@@ -78,8 +84,35 @@ namespace Defenders.Objects
         public void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(Texture, position, null, Color.White, Angle, SpriteOrigin, 0.25f, SpriteEffects.None, 0);
-            eff.Move();
-            eff.Draw(spriteBatch, Texture);
+            //eff.Move();
+            //eff.Draw(spriteBatch, Texture);
+        }
+
+        public void CreateExplosion()
+        {
+            //IsExpired = true;
+            //PlayerStatus.AddPoints(PointValue);
+            //PlayerStatus.IncreaseMultiplier();
+
+            float hue1 = rand.NextFloat(0, 6);
+            float hue2 = (hue1 + rand.NextFloat(0, 2)) % 6f;
+            Color color1 = Util.ColorUtil.HSVToColor(hue1, 0.5f, 1);
+            Color color2 = Util.ColorUtil.HSVToColor(hue2, 0.5f, 1);
+
+            for (int i = 0; i < 120; i++)
+            {
+                float speed = 5f * (1f - 1 / rand.NextFloat(1, 10));
+
+                var state = new Effects.ParticleState()
+                {
+                    Velocity = rand.NextVector2(speed, speed),
+                    Type = Effects.ParticleType.Ship,
+                    LengthMultiplier = .3f
+                };
+
+                Color color = Color.Lerp(color1, color2, rand.NextFloat(0, 1));
+                DefendersGame.ParticleManager.CreateParticle(Art.LineParticle, position, color, 1190, 1.0f, state);
+            }
         }
     }
 }
