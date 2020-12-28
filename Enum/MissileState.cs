@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Defenders.Enum
 {
-    enum MissileState
+    public enum MissileState
     {
         Alive = 1,
         Explode = 2,
