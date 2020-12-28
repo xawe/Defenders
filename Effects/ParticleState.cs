@@ -10,7 +10,7 @@ using Defenders.Extensions;
 
 namespace Defenders.Effects
 {
-    public enum ParticleType { None, Enemy, Bullet, IgnoreGravity, Ship }
+    public enum ParticleType { None, Enemy, Bullet, IgnoreGravity, Missile }
 
     public struct ParticleState
     {
@@ -49,7 +49,7 @@ namespace Defenders.Effects
 
             // fade the particle if its PercentLife or speed is low.
             float alpha = System.Math.Min(1, System.Math.Min(particle.PercentLife * 2, speed * 1f));
-            alpha *= alpha;
+            alpha = alpha;
 
             particle.Tint.A = (byte)(255 * alpha);
 
@@ -57,7 +57,7 @@ namespace Defenders.Effects
             if (particle.State.Type == ParticleType.Bullet)
                 particle.Scale.X = particle.State.LengthMultiplier * System.Math.Min(System.Math.Min(1f, 0.1f * speed + 0.1f), alpha);
             else
-                particle.Scale.X = particle.State.LengthMultiplier * System.Math.Min(System.Math.Min(1f, 0.2f * speed + 0.1f), alpha);
+                particle.Scale.X = particle.State.LengthMultiplier * System.Math.Min(System.Math.Min(1f, .2f * speed + 0.1f), alpha);
 
             particle.Orientation = vel.ToAngle();
 
@@ -76,27 +76,12 @@ namespace Defenders.Effects
             else if (pos.Y > height)
                 vel.Y = -System.Math.Abs(vel.Y);
 
-            if (particle.State.Type != ParticleType.IgnoreGravity)
-            {
-                //foreach (var blackHole in EntityManager.BlackHoles)
-                //{
-                //    var dPos = blackHole.Position - pos;
-                //    float distance = dPos.Length();
-                //    var n = dPos / distance;
-                //    vel += 10000 * n / (distance * distance + 10000);
-
-                //    // add tangential acceleration for nearby particles
-                //    if (distance < 400)
-                //        vel += 45 * new Vector2(n.Y, -n.X) / (distance + 100);
-                //}
-            }
-
             if (System.Math.Abs(vel.X) + System.Math.Abs(vel.Y) < 0.00000000001f) // denormalized floats cause significant performance issues
                 vel = Vector2.Zero;
             else if (particle.State.Type == ParticleType.Enemy)
                 vel *= 0.94f;
-            else if (particle.State.Type == ParticleType.Ship)
-                vel *= 0.940f;
+            else if (particle.State.Type == ParticleType.Missile)
+                vel *= 0.950f;
             else
                 vel *= 0.96f + System.Math.Abs(pos.X) % 0.04f; // rand.Next() isn't thread-safe, so use the position for pseudo-randomness
 
