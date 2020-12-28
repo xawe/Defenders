@@ -68,7 +68,7 @@ namespace Defenders.Objects
                 State = Enum.MissileState.Explode;
                 CreateExplosion();
             }
-            UpdateExplosionFrame(FramesToExplode, State);
+            FramesToExplode = UpdateExplosionFrame(FramesToExplode, State);
             
             // para manter uma aceleração constante sobre o tempo, multiplicar a aceleração pelo deltaTime
             //velocity += acceleration * deltaTime * deltaTime;
@@ -83,8 +83,6 @@ namespace Defenders.Objects
         {
             spriteBatch.Draw(Texture, position, null, Color.White, Angle, SpriteOrigin, 0.25f, SpriteEffects.None, 0);            
         }
-
-        
 
         public void CreateExplosion()
         {
@@ -124,6 +122,5 @@ namespace Defenders.Objects
             }
             return remainingFrames;
         }
-
     }
 }
