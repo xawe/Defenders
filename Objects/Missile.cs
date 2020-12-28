@@ -62,16 +62,14 @@ namespace Defenders.Objects
             // inverter os valores normalizados mutiplicando por -1 antes de atribuir a posição
             position += (constantSpeed * .3f) * -1 ;
 
+            // exploding for test purpose. Remove this code
             if (position.Y >= _game.Window.ClientBounds.Bottom -400)
             {                
                 State = Enum.MissileState.Explode;
                 CreateExplosion();
             }
-
-            if (State.Equals(Enum.MissileState.Explode))
-            {               
-                FramesToExplode--;
-            }
+            UpdateExplosionFrame(FramesToExplode, State);
+            
             // para manter uma aceleração constante sobre o tempo, multiplicar a aceleração pelo deltaTime
             //velocity += acceleration * deltaTime * deltaTime;
             //position += velocity * deltaTime;
@@ -87,6 +85,8 @@ namespace Defenders.Objects
             //eff.Move();
             //eff.Draw(spriteBatch, Texture);
         }
+
+        
 
         public void CreateExplosion()
         {
@@ -110,5 +110,22 @@ namespace Defenders.Objects
                 DefendersGame.ParticleManager.CreateParticle(Art.LineParticle, position, color, 1190, 1.0f, state);
             }
         }
+
+        /// <summary>
+        /// Controla a quantidade de frames que iniciará a explosão.
+        /// Maior quantidade de frames aumentará a quantidade de particulas, e por consequencia a carga de calculos
+        /// </summary>
+        /// <param name="remainingFrames">Quantidade de frames para contagem</param>
+        /// <param name="state">O estado do missel </param>
+        /// <returns>Retorna a quantidade de frames - 1</returns>
+        private int UpdateExplosionFrame(int remainingFrames, Enum.MissileState state)
+        {
+            if (state.Equals(Enum.MissileState.Explode))
+            {
+                return remainingFrames - 1;
+            }
+            return remainingFrames;
+        }
+
     }
 }
