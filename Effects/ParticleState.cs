@@ -10,7 +10,7 @@ using Defenders.Extensions;
 
 namespace Defenders.Effects
 {
-    public enum ParticleType { None, Enemy, Bullet, IgnoreGravity, Ship }
+    public enum ParticleType { None, Enemy, Bullet, IgnoreGravity, Missile }
 
     public struct ParticleState
     {
@@ -95,7 +95,7 @@ namespace Defenders.Effects
                 vel = Vector2.Zero;
             else if (particle.State.Type == ParticleType.Enemy)
                 vel *= 0.94f;
-            else if (particle.State.Type == ParticleType.Ship)
+            else if (particle.State.Type == ParticleType.Missile)
                 vel *= 0.940f;
             else
                 vel *= 0.96f + System.Math.Abs(pos.X) % 0.04f; // rand.Next() isn't thread-safe, so use the position for pseudo-randomness

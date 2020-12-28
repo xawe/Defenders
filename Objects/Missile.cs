@@ -90,10 +90,6 @@ namespace Defenders.Objects
 
         public void CreateExplosion()
         {
-            //IsExpired = true;
-            //PlayerStatus.AddPoints(PointValue);
-            //PlayerStatus.IncreaseMultiplier();
-
             float hue1 = rand.NextFloat(0, 6);
             float hue2 = (hue1 + rand.NextFloat(0, 2)) % 6f;
             Color color1 = Util.ColorUtil.HSVToColor(hue1, 0.5f, 1);
@@ -106,7 +102,7 @@ namespace Defenders.Objects
                 var state = new Effects.ParticleState()
                 {
                     Velocity = rand.NextVector2(speed, speed),
-                    Type = Effects.ParticleType.Ship,
+                    Type = Effects.ParticleType.Missile,
                     LengthMultiplier = .3f
                 };
 
