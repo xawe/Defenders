@@ -8,6 +8,10 @@
   <PropertyGroup>
     <ApplicationManifest>app.manifest</ApplicationManifest>
     <ApplicationIcon>Icon.ico</ApplicationIcon>
+    <PackageId>Xawe Defenders</PackageId>
+    <Authors>Xawe</Authors>
+    <Company>Xawe INC</Company>
+    <Product>Xawe Defenders</Product>
   </PropertyGroup>
   <ItemGroup>
     <None Remove="Icon.ico" />
