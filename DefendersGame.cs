@@ -11,34 +11,26 @@ namespace Defenders
     {
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
-
-        private SpriteFont font;
-        private string debugMessage;
-
+        private SpriteFont _font;
+        private string _debugMessage;
         private Texture2D _backgroundTexture;
-
-        Vector2 spriteOrigin;
+        private Vector2 _spriteOrigin;
+        private MissileLaunchControl _missileLaunchControl;
+        private List<Objects.Missile> _missiles;
+        private List<Objects.Missile> _deadList;
 
         public Rectangle NaveRectangle { get; set; }
-
-
         public Texture2D Texture { get; set; }
-
         public Vector2 Position { get; set; }
-
         public static DefendersGame Instance { get; private set; }
         public static Viewport Viewport { get { return Instance.GraphicsDevice.Viewport; } }
         public static Vector2 ScreenSize { get { return new Vector2(Viewport.Width, Viewport.Height); } }
         public static Effects.ParticleManager<Effects.ParticleState> ParticleManager { get; private set; }
 
-        private MissileLaunchControl spawner;
-
-        private List<Objects.Missile> missiles;
-        private List<Objects.Missile> deadList;
         public DefendersGame()
         {
-            missiles = new List<Objects.Missile>();
-            deadList = new List<Objects.Missile>();
+            _missiles = new List<Objects.Missile>();
+            _deadList = new List<Objects.Missile>();
             Instance = this;
             _graphics = new GraphicsDeviceManager(this);
             _graphics.PreferredBackBufferWidth = 1152;
@@ -48,7 +40,7 @@ namespace Defenders
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
 
-            spawner = new MissileLaunchControl(Instance);
+            _missileLaunchControl = new MissileLaunchControl(Instance);
         }
 
         protected override void Initialize()
@@ -61,35 +53,35 @@ namespace Defenders
         protected override void LoadContent()
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
-            font = Content.Load<SpriteFont>("Font");
+            _font = Content.Load<SpriteFont>("Font");
             Objects.Art.Load(Content);
-            missiles.Add(new Objects.Missile(this, new Vector2(100, 100), 0f));
+            _missiles.Add(new Objects.Missile(this, new Vector2(100, 100), 0f));
         }
 
         protected override void Update(GameTime gameTime)
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
-            spriteOrigin = new Vector2(NaveRectangle.Width / 2, NaveRectangle.Height / 2);
-            missiles.ForEach(m =>
+            _spriteOrigin = new Vector2(NaveRectangle.Width / 2, NaveRectangle.Height / 2);
+            _missiles.ForEach(m =>
             {
                 m.Update(gameTime);
-                debugMessage = "TIME ::> " + gameTime.TotalGameTime + " \n";
-                debugMessage += m.Angle.ToString();
+                _debugMessage = "TIME ::> " + gameTime.TotalGameTime + " \n";
+                _debugMessage += m.Angle.ToString();
 
                 if(m.State.Equals(Enum.MissileState.Exploding) && m.FramesToExplode.Equals(0))
                 {
                     m.State = Enum.MissileState.Dead;
-                    deadList.Add(m);
+                    _deadList.Add(m);
                 }
             });
 
 
-            deadList.ForEach(m => { missiles.Remove(m); });
-            deadList = new List<Objects.Missile>();
+            _deadList.ForEach(m => { _missiles.Remove(m); });
+            _deadList = new List<Objects.Missile>();
 
-            var launchEvent = spawner.LaunchMissile(gameTime);
-            if (launchEvent.Item1) missiles.Add(launchEvent.Item2);
+            var launchEvent = _missileLaunchControl.LaunchMissile(gameTime);
+            if (launchEvent.Item1) _missiles.Add(launchEvent.Item2);
             ParticleManager.Update();
             base.Update(gameTime);
         }
@@ -99,12 +91,12 @@ namespace Defenders
             GraphicsDevice.Clear(Color.Black);
             _spriteBatch.Begin();
 
-            missiles.ForEach(m =>
+            _missiles.ForEach(m =>
             {
                 m.Draw(_spriteBatch);
             });
 
-            _spriteBatch.DrawString(font, debugMessage,
+            _spriteBatch.DrawString(_font, _debugMessage,
                new Vector2(0, 0),
                Color.Gray,
                0,
