@@ -109,6 +109,7 @@ namespace Defenders
                0
                );
             ParticleManager.Draw(_spriteBatch);
+            _spriteBatch.Draw(Objects.Art.Pointer, InputManager.MousePosition, Color.White);
             _spriteBatch.End();
             // TODO: Add your drawing code here
 

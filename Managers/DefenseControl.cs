@@ -8,5 +8,6 @@ namespace Defenders.Managers
 {
     public class DefenseControl
     {
+
     }
 }

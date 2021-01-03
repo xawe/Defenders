@@ -50,6 +50,12 @@
     <None Update="Content\Nave2.xnb">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="Content\Pointer.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Content\reddot2.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Content\Ship.xnb">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
