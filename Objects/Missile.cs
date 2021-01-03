@@ -7,16 +7,15 @@ using Defenders.Effects;
 namespace Defenders.Objects
 {
     /// <summary>
-    /// Responsável por representar um objeto Missel, encapsulando as funcionalidades:
+    /// Responsável por representar um objeto missil, encapsulando as funcionalidades:
     /// Update - Para atualizar informações referentes ao objeto, chamado a cada ciclo
-    /// Draw - Para desenhar as atualizações do missel em tela, chamado a a cada Ciclo
+    /// Draw - Para desenhar as atualizações do missil em tela, chamado a a cada Ciclo
     /// 
     /// </summary>
-    public class Missile
+    public class Missile : BaseEntity
     {
         public static Random rand = new Random();
-        public Texture2D Texture { get; set; }
-        public float Angle { get; set; }
+        public Texture2D Texture { get; set; }        
         public float SpeedFactor { get; set; }
         public Vector2 SpriteOrigin { get; set; }
         
@@ -25,8 +24,7 @@ namespace Defenders.Objects
         public int FramesToExplode { get; set; }
 
         private Vector2 velocity;
-        
-        private Vector2 position;
+                
         private Vector2 acceleration = new Vector2(0);
         private Game _game;
 
@@ -39,19 +37,19 @@ namespace Defenders.Objects
             velocity = new Vector2(0);
             Texture = game.Content.Load<Texture2D>("Ship");
             SpriteOrigin = new Vector2(Texture.Width / 2, Texture.Height / 2);
-            this.position = position;
-            if (angle.Equals(0)) { Angle = 2.8f; }
-            else { Angle = angle; }
+            this.Position = position;
+            if (angle.Equals(0)) { this.Orientation = 2.8f; }
+            else { this.Orientation = angle; }
         }
         /// <summary>
         /// Método responsável por executar os calculos e atualizações do objeto
         /// </summary>
         /// <param name="gameTime"></param>
-        public void Update(GameTime gameTime)
+        public override void Update(GameTime gameTime)
         {
             var deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
             Vector2 up = new Vector2(0f, -1f);
-            Matrix rotMatrix = Matrix.CreateRotationZ(Angle);            
+            Matrix rotMatrix = Matrix.CreateRotationZ(this.Orientation);            
             if (acceleration == Vector2.Zero)
             {
                 // SpeedFactor não tem utilidade se usarmos a velocidade constante
@@ -60,11 +58,11 @@ namespace Defenders.Objects
             // Para manter a velocidade dos misseis constante, normalizar a aceleração
             var constantSpeed = -Vector2.Normalize(acceleration);
             // inverter os valores normalizados mutiplicando por -1 antes de atribuir a posição
-            velocity = position + (constantSpeed * .3f) * -1;
-            position += (constantSpeed * .3f) * -1 ;
+            velocity = this.Position + (constantSpeed * .3f) * -1;
+            this.Position += (constantSpeed * .3f) * -1 ;
 
             // exploding for test purpose. Remove this code
-            if (position.Y >= _game.Window.ClientBounds.Bottom -500)
+            if (this.Position.Y >= _game.Window.ClientBounds.Bottom -500)
             {                
                 State = Enum.MissileState.Exploding;
                 CreateExplosion();
@@ -88,7 +86,7 @@ namespace Defenders.Objects
 
         /// <summary>
         /// Responsável por criar uma explosão esferica
-        /// utilizar quando houver colisão do missel
+        /// utilizar quando houver colisão do missil
         /// </summary>
         public void CreateExplosion()
         {            
@@ -113,7 +111,7 @@ namespace Defenders.Objects
                 };
 
                 Color color = Color.Lerp(color1, color2, rand.NextFloat(0, 1));               
-                DefendersGame.ParticleManager.CreateParticle(Art.LineParticle, position, color, 190, 1.0f, state);
+                DefendersGame.ParticleManager.CreateParticle(Art.LineParticle, this.Position, color, 190, 1.0f, state);
             }
         }
 
@@ -122,7 +120,7 @@ namespace Defenders.Objects
         /// Maior quantidade de frames aumentará a quantidade de particulas, e por consequencia a carga de calculos
         /// </summary>
         /// <param name="remainingFrames">Quantidade de frames para contagem</param>
-        /// <param name="state">O estado do missel </param>
+        /// <param name="state">O estado do missil </param>
         /// <returns>Retorna a quantidade de frames - 1</returns>
         private int UpdateExplosionFrame(int remainingFrames, Enum.MissileState state)
         {
@@ -147,7 +145,7 @@ namespace Defenders.Objects
                 Vector2 perpVel = new Vector2(baseVel.Y, -baseVel.X) * (10.6f * (float)Math.Sin(t * 10));
                 Color sideColor = new Color(240, 38, 9);    // deep red
                 Color midColor = new Color(255, 107, 30);   // orange-yellow
-                Vector2 pos = position + Vector2.Transform(new Vector2(-25, 0), rot);   // position of the ship's exhaust pipe.
+                Vector2 pos = this.Position + Vector2.Transform(new Vector2(-25, 0), rot);   // position of the ship's exhaust pipe.
                 const float alpha = 0.7f;
 
                 // middle particle stream

@@ -1,8 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using System;
-using System.Collections.Generic;
+using Defenders.Objects;
 
-namespace Defenders
+namespace Defenders.Managers
 {
     /// <summary>
     /// Classe responsável por criar as regras para espalhar os misseis.
@@ -26,20 +26,20 @@ namespace Defenders
             _elapsedSpawn = TimeSpan.Zero;
         }
 
-        public ValueTuple<bool, Objects.Missile> LaunchMissile(GameTime gameTime)
+        public ValueTuple<bool, Missile> LaunchMissile(GameTime gameTime)
         {
             if (Math.Round(gameTime.TotalGameTime.TotalSeconds) > Math.Round(_elapsedSpawn.TotalSeconds))
             {
                 float newPos = DefineHorizontalLauchPoint();
                 float newAngle = DefineAngle();
                 _elapsedSpawn = gameTime.TotalGameTime;
-                return new ValueTuple<bool, Objects.Missile>(true,
-                        new Objects.Missile(this._game,
+                return new ValueTuple<bool, Missile>(true,
+                        new Missile(this._game,
                             new Vector2(newPos,
                                 -5),
                             newAngle));
             }
-            return new ValueTuple<bool, Objects.Missile>(false, null);
+            return new ValueTuple<bool, Missile>(false, null);
         }
 
         /// <summary>
