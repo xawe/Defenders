@@ -9,7 +9,7 @@ namespace Defenders
     /// TODO - implementar algoritimo que permita de forma randomica, distrbuir 1 ou mais misseis em intervalos
     /// de tempo também aleatórios.
     /// Os misseis devem distribuidos no eixo Y (0) e X (random) de forma a que o angulo da descida nao colida com as laterais.
-    /// OU em caso de colisão, definir se o missel muda de lado da tela ou se explore, disparando 1 ou mais fragmentos em outros angulos
+    /// OU em caso de colisão, definir se o missil muda de lado da tela ou se explore, disparando 1 ou mais fragmentos em outros angulos
     /// </summary>
     public class MissileLaunchControl
     {
@@ -56,7 +56,7 @@ namespace Defenders
             return ((float)r.NextDouble()) + minAngle ;
         }
         /// <summary>
-        /// Define uma posição inicial no eixo X para lançar o missel de forma randomica.
+        /// Define uma posição inicial no eixo X para lançar o missil de forma randomica.
         /// </summary>
         /// <param name="game"></param>
         /// <returns></returns>
