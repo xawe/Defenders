@@ -1,9 +1,10 @@
-﻿using Microsoft.Xna.Framework;
+﻿using Defenders.Effects;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System.Collections.Generic;
-using System.Linq;
-using Defenders.Effects;
+
+using Defenders.Managers;
 
 namespace Defenders
 {
@@ -70,7 +71,7 @@ namespace Defenders
             {
                 m.Update(gameTime);
                 _debugMessage = "TIME ::> " + gameTime.TotalGameTime + " \n";
-                _debugMessage += m.Angle.ToString();
+                _debugMessage += m.Orientation.ToString();
 
                 if(m.State.Equals(Enum.MissileState.Exploding) && m.FramesToExplode.Equals(0))
                 {
@@ -78,7 +79,6 @@ namespace Defenders
                     _deadList.Add(m);
                 }
             });
-
 
             _deadList.ForEach(m => { _missiles.Remove(m); });
             _deadList = new List<Objects.Missile>();
