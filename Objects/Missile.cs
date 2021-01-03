@@ -7,9 +7,9 @@ using Defenders.Effects;
 namespace Defenders.Objects
 {
     /// <summary>
-    /// Responsável por representar um objeto Missel, encapsulando as funcionalidades:
+    /// Responsável por representar um objeto missil, encapsulando as funcionalidades:
     /// Update - Para atualizar informações referentes ao objeto, chamado a cada ciclo
-    /// Draw - Para desenhar as atualizações do missel em tela, chamado a a cada Ciclo
+    /// Draw - Para desenhar as atualizações do missil em tela, chamado a a cada Ciclo
     /// 
     /// </summary>
     public class Missile
@@ -88,7 +88,7 @@ namespace Defenders.Objects
 
         /// <summary>
         /// Responsável por criar uma explosão esferica
-        /// utilizar quando houver colisão do missel
+        /// utilizar quando houver colisão do missil
         /// </summary>
         public void CreateExplosion()
         {            
@@ -122,7 +122,7 @@ namespace Defenders.Objects
         /// Maior quantidade de frames aumentará a quantidade de particulas, e por consequencia a carga de calculos
         /// </summary>
         /// <param name="remainingFrames">Quantidade de frames para contagem</param>
-        /// <param name="state">O estado do missel </param>
+        /// <param name="state">O estado do missil </param>
         /// <returns>Retorna a quantidade de frames - 1</returns>
         private int UpdateExplosionFrame(int remainingFrames, Enum.MissileState state)
         {
