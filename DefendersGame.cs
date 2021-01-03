@@ -49,6 +49,7 @@ namespace Defenders
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
+            this.IsMouseVisible = false;
             ParticleManager = new ParticleManager<ParticleState>(1024 * 20, ParticleState.UpdateParticle);
             base.Initialize();
         }
@@ -79,7 +80,7 @@ namespace Defenders
                     _deadList.Add(m);
                 }
             });
-
+            InputManager.Update(gameTime);
             _deadList.ForEach(m => { _missiles.Remove(m); });
             _deadList = new List<Objects.Missile>();
 
