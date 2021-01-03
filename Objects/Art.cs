@@ -25,12 +25,15 @@ namespace Defenders.Objects
         
         public static Texture2D Glow { get; private set; }
 
+        public static Texture2D Pointer { get; private set; }
+
 
         public static void Load(ContentManager content)
         {
             //SpaceShip = content.Load<Texture2D>("Ship");
             LineParticle = content.Load<Texture2D>("Laser");
             Glow = content.Load<Texture2D>("Glow");
+            Pointer = content.Load<Texture2D>("Pointer");
         }
 
     }
