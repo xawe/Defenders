@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using Defenders.Extensions;
+using Defenders.Effects;
 
 namespace Defenders.Objects
 {
@@ -60,6 +61,7 @@ namespace Defenders.Objects
             // Para manter a velocidade dos misseis constante, normalizar a aceleração
             var constantSpeed = -Vector2.Normalize(acceleration);
             // inverter os valores normalizados mutiplicando por -1 antes de atribuir a posição
+            velocity = position + (constantSpeed * .3f) * -1;
             position += (constantSpeed * .3f) * -1 ;
 
             // exploding for test purpose. Remove this code
@@ -69,7 +71,7 @@ namespace Defenders.Objects
                 CreateExplosion();
             }
             FramesToExplode = UpdateExplosionFrame(FramesToExplode, State);
-            
+            MakeExhaustFire();
             // para manter uma aceleração constante sobre o tempo, multiplicar a aceleração pelo deltaTime
             //velocity += acceleration * deltaTime * deltaTime;
             //position += velocity * deltaTime;
@@ -81,16 +83,16 @@ namespace Defenders.Objects
         /// <param name="spriteBatch">instancia do spriteBatch</param>
         public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(Texture, position, null, Color.White, Angle, SpriteOrigin, 0.25f, SpriteEffects.None, 0);            
+            //spriteBatch.Draw(Texture, position, null, Color.White, Angle, SpriteOrigin, 0.25f, SpriteEffects.None, 0);            
         }
 
         public void CreateExplosion()
         {
-            float hue1 = rand.NextFloat(0, 6);
-            float hue2 = (hue1 + rand.NextFloat(0, 2)) % 6f;
-            Color color1 = Util.ColorUtil.HSVToColor(hue1, 0.5f, 1);
-            Color color2 = Util.ColorUtil.HSVToColor(hue2, 0.5f, 1);
-
+            float hue1 = 10;
+            float hue2 = (2 + rand.NextFloat(2, 76)) % 6f;
+            Color color1 = Util.ColorUtil.HSVToColor(hue1, 37f, 70);
+            Color color2 = Util.ColorUtil.HSVToColor(hue2, .9f, 7);
+            
             for (int i = 0; i < 120; i++)
             {
                 float speed = 5f * (1f - 1 / rand.NextFloat(1, 10));
@@ -103,7 +105,7 @@ namespace Defenders.Objects
                 };
 
                 Color color = Color.Lerp(color1, color2, rand.NextFloat(0, 1));
-                DefendersGame.ParticleManager.CreateParticle(Art.LineParticle, position, color, 1190, 1.0f, state);
+                DefendersGame.ParticleManager.CreateParticle(Art.LineParticle, position, color, 190, 1.0f, state);
             }
         }
 
@@ -121,6 +123,47 @@ namespace Defenders.Objects
                 return remainingFrames - 1;
             }
             return remainingFrames;
+        }
+
+        private void MakeExhaustFire()
+        {
+            if (velocity.LengthSquared() > 0.1f)
+            {
+                // set up some variables
+                //Angle = velocity.ToAngle();
+                Quaternion rot = Quaternion.CreateFromYawPitchRoll(1.6f, 0f, 0) ;
+
+                double t = DefendersGame.GameTime.TotalGameTime.TotalSeconds;
+                // The primary velocity of the particles is 3 pixels/frame in the direction opposite to which the ship is travelling.
+                Vector2 baseVel = velocity.ScaleTo(0f) ;
+                // Calculate the sideways velocity for the two side streams. The direction is perpendicular to the ship's velocity and the
+                // magnitude varies sinusoidally.
+                Vector2 perpVel = new Vector2(baseVel.Y, -baseVel.X) * (10.6f * (float)Math.Sin(t * 10));
+                Color sideColor = new Color(240, 38, 9);    // deep red
+                Color midColor = new Color(255, 107, 30);   // orange-yellow
+                Vector2 pos = position + Vector2.Transform(new Vector2(-25, 0), rot);   // position of the ship's exhaust pipe.
+                const float alpha = 0.7f;
+
+                // middle particle stream
+                Vector2 velMid = baseVel + rand.NextVector2(0, 0.5f) ;
+                DefendersGame.ParticleManager.CreateParticle(Art.LineParticle, pos, Color.White * alpha, 60f, new Vector2(0.5f, 1),
+                    new ParticleState(velMid , ParticleType.Enemy));
+                DefendersGame.ParticleManager.CreateParticle(Art.Glow, pos, midColor * alpha, 60f, new Vector2(0.5f, 1),
+                    new ParticleState(velMid, ParticleType.Enemy));
+
+                // side particle streams
+                Vector2 vel1 = baseVel + perpVel + rand.NextVector2(0, 0.5f);
+                Vector2 vel2 = baseVel - perpVel + rand.NextVector2(0, 0.3f);
+                DefendersGame.ParticleManager.CreateParticle(Art.LineParticle, pos, Color.White * alpha, 60f, new Vector2(0.5f, 1),
+                    new ParticleState(vel1, ParticleType.Enemy));
+                DefendersGame.ParticleManager.CreateParticle(Art.LineParticle, pos, Color.White * alpha, 60f, new Vector2(0.5f, 1),
+                    new ParticleState(vel2, ParticleType.Enemy));
+
+                DefendersGame.ParticleManager.CreateParticle(Art.Glow, pos, sideColor * alpha, 60f, new Vector2(0.5f, 1),
+                    new ParticleState(vel1, ParticleType.Enemy));
+                DefendersGame.ParticleManager.CreateParticle(Art.Glow, pos, sideColor * alpha, 60f, new Vector2(0.5f, 1),
+                    new ParticleState(vel2, ParticleType.Enemy));
+            }
         }
     }
 }

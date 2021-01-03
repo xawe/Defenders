@@ -22,12 +22,15 @@ namespace Defenders.Objects
         /// Linha da particula
         /// </summary>
         public static Texture2D LineParticle { get; private set; }
+        
+        public static Texture2D Glow { get; private set; }
 
 
         public static void Load(ContentManager content)
         {
             //SpaceShip = content.Load<Texture2D>("Ship");
             LineParticle = content.Load<Texture2D>("Laser");
+            Glow = content.Load<Texture2D>("Glow");
         }
 
     }

@@ -27,6 +27,8 @@ namespace Defenders
         public static Vector2 ScreenSize { get { return new Vector2(Viewport.Width, Viewport.Height); } }
         public static Effects.ParticleManager<Effects.ParticleState> ParticleManager { get; private set; }
 
+        public static GameTime GameTime { get; private set; }
+
         public DefendersGame()
         {
             _missiles = new List<Objects.Missile>();
@@ -60,6 +62,7 @@ namespace Defenders
 
         protected override void Update(GameTime gameTime)
         {
+            GameTime = gameTime;
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
             _spriteOrigin = new Vector2(NaveRectangle.Width / 2, NaveRectangle.Height / 2);

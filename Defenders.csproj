@@ -35,6 +35,12 @@
     <None Update="Content\Font.xnb">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="Content\Glow.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Content\Glow.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Content\Laser.xnb">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
