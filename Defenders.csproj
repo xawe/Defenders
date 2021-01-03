@@ -8,6 +8,10 @@
   <PropertyGroup>
     <ApplicationManifest>app.manifest</ApplicationManifest>
     <ApplicationIcon>Icon.ico</ApplicationIcon>
+    <PackageId>Xawe Defenders</PackageId>
+    <Authors>Xawe</Authors>
+    <Company>Xawe INC</Company>
+    <Product>Xawe Defenders</Product>
   </PropertyGroup>
   <ItemGroup>
     <None Remove="Icon.ico" />
@@ -29,6 +33,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Update="Content\Font.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Content\Glow.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Content\Glow.xnb">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="Content\Laser.xnb">
