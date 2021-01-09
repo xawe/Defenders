@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,6 +12,15 @@ namespace Defenders.Managers
     /// </summary>
     public class DefenseControl
     {
+        public Vector2[] LunchPositions { get; set; }
+
+
+        public DefenseControl()
+        {
+            LunchPositions = new Vector2[1];
+            LunchPositions[0] = new Vector2(400, 400);
+        }
+
 
     }
 }

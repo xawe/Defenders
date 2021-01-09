@@ -20,8 +20,9 @@ namespace Defenders.Managers
 			updateStates();
 
 
-			if (leftButtonState.Equals(ButtonState.Released) && lastLeftButtonState.Equals(ButtonState.Pressed){
-
+			if (leftButtonState.Equals(ButtonState.Released) && lastLeftButtonState.Equals(ButtonState.Pressed))
+			{
+				//Launch Missile
             }
         }
 
