@@ -22,9 +22,7 @@ namespace Defenders.Objects
 
         public Enum.MissileState State { get; set; }
         public int FramesToExplode { get; set; }
-
-        private Vector2 velocity;
-                
+                        
         private Vector2 acceleration = new Vector2(0);
         private Game _game;
 
@@ -34,12 +32,12 @@ namespace Defenders.Objects
             State = Enum.MissileState.Alive;            
             _game = game;
             if (SpeedFactor == 0) SpeedFactor = 277f;
-            velocity = new Vector2(0);
+            Velocity = new Vector2(0);
             Texture = game.Content.Load<Texture2D>("Ship");
             SpriteOrigin = new Vector2(Texture.Width / 2, Texture.Height / 2);
-            this.Position = position;
+            Position = position;
             if (angle.Equals(0)) { this.Orientation = 2.8f; }
-            else { this.Orientation = angle; }
+            else { Orientation = angle; }
         }
         /// <summary>
         /// Método responsável por executar os calculos e atualizações do objeto
@@ -58,11 +56,11 @@ namespace Defenders.Objects
             // Para manter a velocidade dos misseis constante, normalizar a aceleração
             var constantSpeed = -Vector2.Normalize(acceleration);
             // inverter os valores normalizados mutiplicando por -1 antes de atribuir a posição
-            velocity = this.Position + (constantSpeed * .3f) * -1;
-            this.Position += (constantSpeed * .3f) * -1 ;
+            Velocity = Position + (constantSpeed * .3f) * -1;
+            Position += (constantSpeed * .3f) * -1 ;
 
             // exploding for test purpose. Remove this code
-            if (this.Position.Y >= _game.Window.ClientBounds.Bottom -500)
+            if (Position.Y >= _game.Window.ClientBounds.Bottom -500)
             {                
                 State = Enum.MissileState.Exploding;
                 CreateExplosion();
@@ -91,14 +89,7 @@ namespace Defenders.Objects
         public void CreateExplosion()
         {            
             Color color1 = new Color(250,21,19);
-            Color color2 = new Color(240, 187, 50);
-            /*
-            float hue1 = 10;
-            float hue2 = rand.NextFloat(1, 545) ;
-            Color color1 = Util.ColorUtil.HSVToColor(hue1, 37f, 70);
-            Color color2 = Util.ColorUtil.HSVToColor(hue2, 18.2f, 30) ;
-            
-            */
+            Color color2 = new Color(240, 187, 50);            
             for (int i = 0; i < 120; i++)
             {
                 float speed = 5f * (1f - 1 / rand.NextFloat(1, 10));
@@ -111,7 +102,7 @@ namespace Defenders.Objects
                 };
 
                 Color color = Color.Lerp(color1, color2, rand.NextFloat(0, 1));               
-                DefendersGame.ParticleManager.CreateParticle(Art.LineParticle, this.Position, color, 190, 1.0f, state);
+                DefendersGame.ParticleManager.CreateParticle(Art.LineParticle, Position, color, 190, 1.0f, state);
             }
         }
 
@@ -133,13 +124,13 @@ namespace Defenders.Objects
 
         private void MakeExhaustFromMissile()
         {
-            if (velocity.LengthSquared() > 0.1f)
+            if (Velocity.LengthSquared() > 0.1f)
             {
                 // set up some variables        
                 Quaternion rot = Quaternion.CreateFromYawPitchRoll(1.6f, 0f, 0) ;
                 double t = DefendersGame.GameTime.TotalGameTime.TotalSeconds;
                 // The primary velocity of the particles is 3 pixels/frame in the direction opposite to which the ship is travelling.
-                Vector2 baseVel = velocity.ScaleTo(0.0f); ;
+                Vector2 baseVel = Velocity.ScaleTo(0.0f); ;
                 // Calculate the sideways velocity for the two side streams. The direction is perpendicular to the ship's velocity and the
                 // magnitude varies sinusoidally.
                 Vector2 perpVel = new Vector2(baseVel.Y, -baseVel.X) * (10.6f * (float)Math.Sin(t * 10));
