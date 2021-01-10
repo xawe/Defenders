@@ -11,15 +11,20 @@ namespace Defenders.Managers
     public class InputManager
     {
         private static MouseState mouseState, lastMouseState;
+		private static ButtonState leftButtonState, lastLeftButtonState;
 
         public static Vector2 MousePosition { get { return new Vector2(mouseState.X, mouseState.Y); } }
 
         public static void Update(GameTime gameTime)
         {
-            lastMouseState = mouseState;
-            mouseState = Mouse.GetState();
-        }
+			updateStates();
 
+
+			if (leftButtonState.Equals(ButtonState.Released) && lastLeftButtonState.Equals(ButtonState.Pressed))
+			{
+				//Launch Missile
+            }
+        }
 
 		public static Vector2 GetAimDirection()
 		{			
@@ -33,6 +38,14 @@ namespace Defenders.Managers
 				return Vector2.Zero;
 			else
 				return Vector2.Normalize(direction);
+		}
+
+		private static void updateStates()
+        {
+			lastMouseState = mouseState;
+			lastLeftButtonState = mouseState.LeftButton;
+			mouseState = Mouse.GetState();
+			lastLeftButtonState = mouseState.LeftButton;
 		}
 	}
 }

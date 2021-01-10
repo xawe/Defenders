@@ -99,7 +99,7 @@ namespace Defenders
             {
                 m.Draw(_spriteBatch);
             });
-
+            // desenhando texto de debug
             _spriteBatch.DrawString(_font, _debugMessage,
                new Vector2(0, 0),
                Color.Gray,
