@@ -15,10 +15,11 @@ namespace Defenders.Managers
         public Vector2[] LunchPositions { get; set; }
 
 
-        public DefenseControl()
+        public DefenseControl(Game game)
         {
+            //Inicializando um pouco de tiro centralizado para testes
             LunchPositions = new Vector2[1];
-            LunchPositions[0] = new Vector2(400, 400);
+            LunchPositions[0] = new Vector2(game.Window.ClientBounds.X /2, 800); ;
         }
 
 
