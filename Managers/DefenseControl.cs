@@ -17,7 +17,7 @@ namespace Defenders.Managers
 
         public DefenseControl(Game game)
         {
-            //Inicializando um pouco de tiro centralizado para testes
+            //Inicializando um ponto de tiro centralizado para testes
             LunchPositions = new Vector2[1];
             LunchPositions[0] = new Vector2(game.Window.ClientBounds.X /2, 800); ;
         }
