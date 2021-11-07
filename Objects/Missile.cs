@@ -68,8 +68,8 @@ namespace Defenders.Objects
             FramesToExplode = UpdateExplosionFrame(FramesToExplode, State);
             MakeExhaustFromMissile();
             // para manter uma aceleração constante sobre o tempo, multiplicar a aceleração pelo deltaTime
-            //velocity += acceleration * deltaTime * deltaTime;
-            //position += velocity * deltaTime;
+            //Velocity += acceleration * deltaTime * deltaTime;
+            //Position += Velocity * deltaTime;
         }
 
         /// <summary>
